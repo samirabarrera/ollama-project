@@ -1,19 +1,18 @@
-import express from 'express';
-import assistantRoutes from './routes/assistant.routes.js'; 
+import express from "express";
+import dotenv from "dotenv";
+import { assistantRouter } from "./routes/assistant.routes.js";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 app.use(express.json());
-app.use('/api', assistantRoutes);
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'Server is running perfectly' });
-});
+const PORT = process.env.PORT;
+
+// Todas las rutas del asistente bajo /api
+app.use("/api", assistantRouter);
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor backend corriendo en: http://localhost:${PORT}`);
-  console.log(`🤖 Endpoint del asistente listo en: http://localhost:${PORT}/api/query`);
+  console.log(`Servidor corriendo en http://127.0.0.1:${PORT}`);
+  console.log(`Endpoint disponible: POST http://127.0.0.1:${PORT}/api/query`);
 });
-
-export default app;

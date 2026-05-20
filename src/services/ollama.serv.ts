@@ -1,29 +1,41 @@
-import axios from 'axios';
+import dotenv from "dotenv";
+dotenv.config();
 
-export class OllamaService {
-  private ollamaUrl = 'http://localhost:11434/api/generate';
+const OLLAMA_URL = process.env.OLLAMA_URL ?? "http://127.0.0.1:11434/api/chat";
 
-  private chatHistory: string[] = []; 
+const SYSTEM_PROMPT = `Tutor de JavaScript y enseñas en español`;
 
-  async askOllama(prompt: string): Promise<string> {
-    const systemPrompt = "Eres un profesor experto en JavaScript. Responder en español, con ejemplos simples y tono amigable.";
-
-    const fullPrompt = `${systemPrompt}\nHistorial:\n${this.chatHistory.join('\n')}\nUsuario: ${prompt}`;
-
-    try {
-      const response = await axios.post(this.ollamaUrl, {
-        model: 'gemma3',
-        prompt: fullPrompt,
-        stream: false 
-      });
-      
-      this.chatHistory.push(`Usuario: ${prompt}`, `Asistente: ${response.data.response}`);
-      
-      return response.data.response;
-    } catch (error) {
-      throw new Error('Error al conectar con Ollama');
-    }
-  }
+export interface ChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
 }
 
-export default OllamaService;
+interface OllamaResponse {
+  message: ChatMessage;
+  done: boolean;
+}
+
+export async function askOllama(historial: ChatMessage[], mensaje: string): Promise<string> {
+  const mensajes: ChatMessage[] = [
+    { role: "system", content: SYSTEM_PROMPT },
+    ...historial,
+    { role: "user", content: mensaje },
+  ];
+
+  const res = await fetch(OLLAMA_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "gemma3",
+      messages: mensajes,
+      stream: false,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error de Ollama: ${res.status}`);
+  }
+
+  const data = (await res.json()) as OllamaResponse;
+  return data.message.content;
+}

@@ -1,9 +1,6 @@
-import { Router } from 'express';
-import { queryAssistant } from '../controllers/assistant.controller.js';
+import { Router } from "express";
+import { queryAssistant } from "../controllers/assistantController.js";
 
-const router = Router();
+export const assistantRouter = Router();
 
-// Define el endpoint requerido en la tercera sección
-router.post('/query', queryAssistant);
-
-export default router;
+assistantRouter.post("/query", queryAssistant);
