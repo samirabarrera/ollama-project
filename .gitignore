@@ -1,0 +1,37 @@
+# --- Dependencias ---
+node_modules/
+jspm_packages/
+
+# --- Carpetas de Compilación (TypeScript) ---
+# Aquí es donde se guardará tu código compilado a JavaScript
+dist/
+build/
+out/
+
+# --- Variables de Entorno (Seguridad) ---
+# NUNCA subas tus credenciales o tokens a GitHub
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# --- Logs y Errores ---
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# --- Configuraciones del Editor/Sistema ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
