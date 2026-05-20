@@ -15,3 +15,11 @@
 ![alt text](image.png)
 
 ## Tercera Sección - Creación del servidor inteligente
+** Pregunta 1:
+![alt text](image-1.png)
+
+** Pregunta 2:
+![alt text](image-2.png)
+
+**Pregunta 3:
+![alt text](image-3.png)
